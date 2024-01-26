@@ -2,3 +2,7 @@
 	display: flex;
 	justify-content: center;
 }
+.completed {
+	color: #ccc;
+	text-decoration: line-through #666;
+}

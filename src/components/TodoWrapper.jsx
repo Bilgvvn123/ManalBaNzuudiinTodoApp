@@ -1,41 +1,134 @@
 import React, { useState } from "react";
-import TodoCard from "./TodoCard";
 
 const TodoWrapper = () => {
 	const [todos, setTodos] = useState([]);
 
-	const [value, setValue] = useState("");
+	const [inputValue, setInputValue] = useState("");
 
-	function add() {
-		setTodos([...todos, { todo: value, id: Math.random() }]);
-	}
+	const addTodo = () => {
+		setTodos([
+			...todos,
+			{
+				todo: inputValue,
+				id: Math.random(),
+				completed: false,
+				isBold: false,
+				isEditing: false,
+			},
+		]);
+		setInputValue("");
+	};
 
-	function allClear() {
-		setTodos([]);
-	}
+	const deleteTodo = (id) => {
+		const newTodos = [];
+		todos.forEach((el) => {
+			if (el.id !== id) newTodos.push(el);
+		});
+
+		setTodos(newTodos);
+	};
+
+	const bold = (id) => {
+		const newTodos = [];
+		todos.forEach((el) => {
+			if (el.id !== id) newTodos.push(el);
+			else newTodos.push({ ...el, isBold: !el.isBold });
+		});
+
+		setTodos(newTodos);
+	};
+
+	const completed = (id) => {
+		const newTodos = [];
+		todos.forEach((el) => {
+			if (el.id !== id) newTodos.push(el);
+			else newTodos.push({ ...el, completed: !el.completed });
+		});
+
+		setTodos(newTodos);
+	};
+
+	const edit = (id) => {
+		const todo = todos.find((el) => el.id === id);
+
+		if (!todo.isEditing) {
+			const newTodos = [];
+			todos.forEach((el) => {
+				if (el.id !== id) newTodos.push(el);
+				else {
+					setInputValue(el.todo);
+					newTodos.push({ ...el, isEditing: true });
+				}
+			});
+
+			setTodos(newTodos);
+		} else {
+			const newTodos = [];
+			todos.forEach((el) => {
+				if (el.id !== id) newTodos.push(el);
+				else {
+					newTodos.push({
+						...el,
+						isEditing: false,
+						todo: inputValue,
+					});
+					setInputValue("");
+				}
+				setTodos(newTodos);
+			});
+		}
+	};
 
 	return (
 		<div>
 			<h1>Todo Lists</h1>
 			<input
 				type="text"
-				className="input"
-				onChange={(e) => setValue(e.target.value)}
+				value={inputValue}
+				placeholder="Aid"
+				onChange={(e) => setInputValue(e.target.value)}
 			/>
-			<button onClick={add}>add</button>
-			<button onClick={allClear}>ac</button>
-			<ol>
+			{/* addTodo */}
+			<button onClick={addTodo}>add</button>
+
+			<div className="todos">
 				{todos.length !== 0
-					? todos.map((t, i) => (
-							<TodoCard
-								key={i}
-								setTodos={setTodos}
-								todos={todos}
-								todoObj={t}
-							/>
+					? todos.map((el, i) => (
+							<div key={i}>
+								<>
+									<span
+										style={{
+											fontWeight:
+												el.isBold === true
+													? "bold"
+													: "",
+										}}
+										className={
+											el.completed === true
+												? "completed"
+												: ""
+										}
+									>
+										{el.todo}{" "}
+									</span>
+									<b>{el.id} </b>
+								</>
+								<button onClick={() => deleteTodo(el.id)}>
+									delete
+								</button>
+								<button onClick={() => bold(el.id)}>
+									bold
+								</button>
+								<button onClick={() => completed(el.id)}>
+									completed
+								</button>
+								<button onClick={() => edit(el.id)}>
+									{el.isEditing ? "add" : "edit"}
+								</button>
+							</div>
 					  ))
-					: "No Todos"}
-			</ol>
+					: "no todos"}
+			</div>
 		</div>
 	);
 };
