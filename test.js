@@ -1,3 +1,12 @@
-const a = [1, 2, 3, 4, 5];
+// asynchronous synchronous - синхрон
 
-const newA = a.filter((e) => e !== 5);
+async function a() {
+	console.log("a");
+}
+
+function b() {
+	console.log("b");
+}
+
+a();
+b();
