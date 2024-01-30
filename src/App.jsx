@@ -7,25 +7,25 @@ import Spinner from "./components/Spinner";
 import { Link, Route, Routes } from "react-router-dom";
 import Home from "./pages/Home";
 import About from "./pages/About";
+import Users from "./pages/Products";
+import User from "./pages/Product";
 
 function App() {
 	const [a, setA] = useState([]);
 	const [loading, setLoading] = useState(true);
 
-	useEffect(function () {
-		async function dataTatagFunc() {
-			const res = await axios.get(
-				"https://jsonplaceholder.typicode.com/users"
-			);
+	// useEffect(function () {
+	// 	async function dataTatagFunc() {
+	// 		const res = await axios.get(
+	// 			"https://jsonplaceholder.typicode.com/users"
+	// 		);
 
-			setA(res.data);
-			setLoading(false);
-		}
+	// 		setA(res.data);
+	// 		setLoading(false);
+	// 	}
 
-		dataTatagFunc();
-	}, []);
-
-	console.log("first");
+	// 	dataTatagFunc();
+	// }, []);
 
 	return (
 		<>
@@ -49,6 +49,8 @@ function App() {
 				<Route path="/" element={<h1>HELLO</h1>} />
 				<Route path="/home" element={<Home />} />
 				<Route path="/about" element={<About />} />
+				<Route path="/users" element={<Users />} />
+				<Route path="/users/:id" element={<User />} />
 			</Routes>
 		</>
 	);
