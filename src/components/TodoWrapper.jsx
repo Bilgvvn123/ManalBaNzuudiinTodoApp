@@ -2,6 +2,7 @@ import React, { useState } from "react";
 
 const TodoWrapper = () => {
 	const [todos, setTodos] = useState([]);
+	const [isLoggedIn, setLoggedIn] = useState({});
 
 	const [inputValue, setInputValue] = useState("");
 
